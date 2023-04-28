@@ -1,4 +1,5 @@
 {
-  "cSpell.words": ["SQLHOST"],
-  "dotenv.enableAutocloaking": false
+  "cSpell.words": ["farmpouch", "jwks", "memorystore", "SQLHOST"],
+  "dotenv.enableAutocloaking": false,
+  "vue.features.codeActions.enable": false
 }

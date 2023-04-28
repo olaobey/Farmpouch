@@ -1,0 +1,25 @@
+How to Connect AWS RDS with MySQL Workbench
+In AWS, the database is created using RDS
+If you want to configure the database using the local machine you can use MySQL workbench.
+
+In this video we will see :
+- Creating a database on the server 
+- Create an RDS instance
+- Connect RDS instance with MySQL workbench
+- Creating database in MySQL workbench
+
+Requirements
+1:AWS account
+2:MySQL Workbench
+ It needs endpoint or host address, username, and password to connect. Do not forget to set security group otherwise it will not connect. 
+Amazon Relational Database Service (Amazon RDS) makes it easy to set up, operate, and scale a relational database in the cloud. It provides cost-efficient and resizable capacity while automating time-consuming administration tasks such as hardware provisioning, database setup, patching, and backups. It frees you to focus on your applications so you can give them the fast performance, high availability, security, and compatibility they need. RDS need to connect with a machine from where you want to access it. 
+
+Amazon Relational Database Service (Amazon RDS) makes it easy to set up, operate, and scale a relational database in the cloud.
+It provides cost-efficient and resizable capacity while automating time-consuming administration tasks such as hardware provisioning, database setup, patching and backups.
+It frees you to focus on your applications so you can give them the fast performance, high availability, security and compatibility they need.
+-RDS
+
+MySQL Workbench is a unified visual tool for database architects, developers, and DBAs.
+It provides data modeling, SQL development, and comprehensive administration tools for server configuration, user administration, backup, and much more.
+MySQL Workbench is available on Windows, Linux and Mac OS X.
+-MySQL

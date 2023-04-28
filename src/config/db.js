@@ -32,7 +32,7 @@ pool.on("connection", (connection) => {
 });
 
 // Export a function to query the database
-module.exports.query = async (sql, values) => {
+module.exports.pool = async (sql, values) => {
   const promisePool = pool.promise();
   const [results, fields] = await promisePool.execute(sql, values);
   return results;

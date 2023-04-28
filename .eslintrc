@@ -1,5 +1,5 @@
 {
-  "extends": "@voxpelli",
+  "extends": "",
   "root": true,
   "rules": {
     "n/no-process-env": 0
