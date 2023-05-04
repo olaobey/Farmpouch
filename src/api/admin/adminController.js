@@ -1,3 +1,4 @@
+const pagination = require("express-paginate");
 const User = require("../../model/userModel");
 const Investment = require("../../model/investmentModel");
 
@@ -19,11 +20,10 @@ exports.getallInvestments = async (req, res) => {
       limit,
       offset,
     });
+    const results = pagination.paginate(investments.count, page, limit);
     return res.status(200).json({
       investments: investments.rows,
-      totalCount: investments.count,
-      currentPage: page,
-      totalPages: Math.ceil(investments.count / limit),
+      ...results,
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -68,13 +68,12 @@ exports.getAllUsers = async (req, res) => {
       limit,
       offset,
     });
+    const results = pagination.paginate(users.count, page, limit);
     res.json({
       status: "success",
       data: {
         users: users.rows,
-        count: users.count,
-        page,
-        limit,
+        ...results,
       },
     });
   } catch (error) {

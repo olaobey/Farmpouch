@@ -5,9 +5,11 @@ const {
   createInvestment,
   updateInvestment,
   deleteInvestment,
+  uploadInvestments,
 } = require("./investmentController");
 const multer = require("multer");
-const Authenticate = require("../../middleware/authenticate");
+const checkRole = require("../../middleware/authenticate");
+const protect = require("../../middleware/auth");
 
 const router = express.Router();
 
@@ -40,32 +42,20 @@ const upload = multer({
 
 router.post(
   "/farm_investments",
-  Authenticate.auth,
-  Authenticate.checkRole("ROLE_ADMIN"),
-  createInvestment,
-  upload.single("file"),
-  async (req, res) => {
-    // Get the file data from the request object
-    const fileData = req.file.buffer.toString("utf-8");
-
-    // Process the file data and insert new investments into the database
-    const newInvestments = parseInvestmentsFromCSV(fileData);
-    await createInvestment(newInvestments);
-
-    // Send a success response
-    res.status(200).send("Investments uploaded successfully");
-  },
-  createInvestment
+  protect,
+  checkRole("admin"),
+  uploadInvestments,
+  upload.single("file")
 );
 
-router.post("/farm-investment", Authenticate.auth, createInvestment);
+router.post("/farm-investment", protect, createInvestment);
 
-router.get("/farm-investment", Authenticate.auth, getUserInvestments);
+router.get("/farm-investment", protect, getUserInvestments);
 
-router.get("/farm-investment/:id", Authenticate.auth, getInvestmentId);
+router.get("/farm-investment/:id", protect, getInvestmentId);
 
-router.put("/farm-investment/:id", Authenticate.auth, updateInvestment);
+router.put("/farm-investment/:id", protect, updateInvestment);
 
-router.delete("/farm-investment/:id", Authenticate.auth, deleteInvestment);
+router.delete("/farm-investment/:id", protect, deleteInvestment);
 
 module.exports = router;

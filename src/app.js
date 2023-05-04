@@ -5,11 +5,10 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
-const passport = require("passport");
 const routers = require("../src/api/routes/index");
 const flash = require("connect-flash");
 const corsOptions = { credentials: true, origin: process.env.URL || "*" };
-
+const pagination = require("express-paginate");
 const app = express();
 
 // Configuring dotenv
@@ -25,13 +24,11 @@ app.use(express.json());
 
 app.use(morgan("dev"));
 
+app.use(pagination.middleware(process.env.LIMIT, process.env.MAX_LIMIT)); // default limit: 10, max limit: 50
+
 app.use(express.urlencoded({ extended: true }));
 
 app.use(csrf());
-
-app.use(passport.initialize());
-
-app.use(passport.session());
 
 app.use(flash());
 

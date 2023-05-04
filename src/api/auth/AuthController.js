@@ -188,37 +188,37 @@ exports.sendVerificationMail = async (req, res) => {
     throw new Error(error);
   }
 };
-exports.verifyMail = async (req, res) => {
-  try {
-    // grab the token
-    const token = req.query.token;
-    // check if token exists
-    // or just send an error
-    if (token) {
-      var check = await resetToken.findOne({ token: token });
-      if (check) {
-        // token verified
-        // set the property of verified to true for the user
-        var userData = await User.findOne({ email: check.email });
-        userData.isVerified = true;
-        await userData.save();
-        // delete the token now itself
-        await resetToken.findOneAndDelete({ token: token });
-        res
-          .status(204)
-          .send({ message: "Token has been deleted successfully." });
-      } else {
-        res.status(401).send({
-          username: req.user.username,
-          verified: req.user.isVerified,
-          err: "Invalid token or Token has expired, Try again.",
-        });
-      }
-    }
-  } catch (error) {
-    throw new Error(error);
-  }
-};
+// exports.verifyMail = async (req, res) => {
+//   try {
+//     // grab the token
+//     const token = req.query.token;
+//     // check if token exists
+//     // or just send an error
+//     if (token) {
+//       var check = await resetToken.findOne({ token: token });
+//       if (check) {
+//         // token verified
+//         // set the property of verified to true for the user
+//         var userData = await User.findOne({ email: check.email });
+//         userData.isVerified = true;
+//         await userData.save();
+//         // delete the token now itself
+//         await resetToken.findOneAndDelete({ token: token });
+//         res
+//           .status(204)
+//           .send({ message: "Token has been deleted successfully." });
+//       } else {
+//         res.status(401).send({
+//           username: req.user.username,
+//           verified: req.user.isVerified,
+//           err: "Invalid token or Token has expired, Try again.",
+//         });
+//       }
+//     }
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// };
 
 exports.forgotPassword = async (req, res) => {
   try {

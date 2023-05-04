@@ -12,9 +12,9 @@ let localPoolConfig = {
 };
 console.log(localPoolConfig);
 
-types.setTypeParser(1700, function (val) {
-  return parseFloat(val);
-});
+// types.setTypeParser(1700, function (val) {
+//   return parseFloat(val);
+// });
 
 const poolConfig = process.env.DATABASE_URL
   ? {

@@ -1,5 +1,21 @@
 {
   "cSpell.words": ["farmpouch", "jwks", "memorystore", "SQLHOST"],
   "dotenv.enableAutocloaking": false,
-  "vue.features.codeActions.enable": false
+  "vue.features.codeActions.enable": false,
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "previewLimit": 50,
+      "server": "farmpouchinstance.cdxrmthixva4.us-east-1.rds.amazonaws.com",
+      "port": 3306,
+      "driver": "MySQL",
+      "username": "admin",
+      "database": "farmpouchDb",
+      "name": "farmpouch",
+      "connectionTimeout": 5000,
+      "askForPassword": true
+    }
+  ]
 }

@@ -1,17 +1,26 @@
 const UserInvestment = require("../../model/usersInvestmentModel");
+const pagination = require("express-paginate");
 
 // Get all user investments
 exports.getUserInvestments = async (req, res) => {
   try {
-    const { page, limit } = req.query;
-    const options = {
-      page: parseInt(page, 10) || 1,
-      limit: parseInt(limit, 10) || 10,
-      sort: { createdAt: -1 },
-      populate: "user investment",
-    };
-    const userInvestments = await UserInvestment.paginate({}, options);
-    res.status(200).json(userInvestments);
+    const [results, itemCount] = await Promise.all([
+      UserInvestment.find({})
+        .populate("user investment")
+        .limit(req.query.limit)
+        .skip(req.skip)
+        .sort({ createdAt: -1 })
+        .exec(),
+      UserInvestment.countDocuments({}),
+    ]);
+    const pageCount = Math.ceil(itemCount / req.query.limit);
+
+    res.status(200).json({
+      userInvestments: results,
+      pageCount,
+      itemCount,
+      pages: pagination.getArrayPages(req)(3, pageCount, req.query.page),
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

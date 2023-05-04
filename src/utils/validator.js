@@ -1,5 +1,5 @@
 const { check, validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 require("dotenv").config();
 
 exports.validPassword = (hashPassword, password) => {

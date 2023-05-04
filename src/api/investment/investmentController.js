@@ -1,4 +1,36 @@
+const pagination = require("express-paginate");
 const Investment = require("../../model/investmentModel");
+const {
+  parseInvestmentsFromCSV,
+  insertInvestments,
+} = require("../../service/uploadFile");
+
+// Controller function to handle investment upload
+exports.uploadInvestments = async (req, res) => {
+  try {
+    // Get the investment data from the request body
+    const { name, location, duration, amountPerUnit } = req.body;
+    if (!name || !location || !amountPerUnit || !duration) {
+      return res.status(400).json("You have provided wrong parameters");
+    }
+
+    // Get the file data from the request object
+    const fileData = req.file.buffer.toString("utf-8");
+
+    // Parse the CSV data and insert new investments into the database
+    const newInvestments = parseInvestmentsFromCSV(fileData);
+    const createdInvestments = await insertInvestments(newInvestments);
+
+    // Send a success response
+    res.status(200).json({
+      message: "Investments uploaded successfully",
+      data: createdInvestments,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 // GET all investments
 exports.getAllInvestments = async (req, res) => {
@@ -10,9 +42,12 @@ exports.getAllInvestments = async (req, res) => {
       limit: limit,
       offset: offset,
     });
+    const results = pagination.paginate(investments.count, page, limit);
+
     res.status(200).json({
       success: true,
       investments: investments,
+      ...results,
     });
   } catch (error) {
     res.status(500).json({

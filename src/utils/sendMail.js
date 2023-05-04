@@ -7,8 +7,7 @@ var smtpTransport = nodemailer.createTransport({
     pass: "<password>",
   },
 });
-
-module.exports.sendResetEmail = async (email, token) => {
+exports.sendResetEmail = async (email, token) => {
   // change first part to your domain
   const url = "http://localhost:8000/user/reset-password?token=" + token;
 
@@ -21,7 +20,7 @@ module.exports.sendResetEmail = async (email, token) => {
   });
 };
 
-module.exports.sendVerifyEmail = async (email, token) => {
+exports.sendVerifyEmail = async (email, token) => {
   // change first part to your domain
   const url = "http://localhost:8000/user/verifyemail?token=" + token;
 

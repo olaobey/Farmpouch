@@ -10,7 +10,7 @@ const {
   deleteUsers,
   deleteInvestment,
 } = require("./adminController");
-const adminAuth = require("../../middleware/AdminAuth");
+const adminAuth = require("../../middleware/adminAuth");
 
 const router = express.Router();
 
