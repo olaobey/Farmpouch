@@ -9,8 +9,8 @@ const {
 exports.uploadInvestments = async (req, res) => {
   try {
     // Get the investment data from the request body
-    const { name, location, duration, amountPerUnit } = req.body;
-    if (!name || !location || !amountPerUnit || !duration) {
+    const { units, total_investment, amountPerUnit } = req.body;
+    if (!units || !total_investment || !amountPerUnit) {
       return res.status(400).json("You have provided wrong parameters");
     }
 
@@ -42,7 +42,7 @@ exports.getAllInvestments = async (req, res) => {
       limit: limit,
       offset: offset,
     });
-    const results = pagination.paginate(investments.count, page, limit);
+    const results = await Investment.pagination(investments.count, page, limit);
 
     res.status(200).json({
       success: true,
@@ -83,9 +83,8 @@ exports.getInvestmentId = async (req, res) => {
 exports.createInvestment = async (req, res) => {
   try {
     const investment = await Investment.create({
-      name: req.body.name,
-      location: req.body.location,
-      duration: req.body.duration,
+      units: req.body.units,
+      total_investment: req.body.total_investment,
       amount_per_unit: req.body.amount_per_unit,
       available_units: req.body.available_units,
     });
@@ -111,9 +110,8 @@ exports.updateInvestment = async (req, res) => {
         message: "Investment not found",
       });
     }
-    investment.name = req.body.name;
-    investment.location = req.body.location;
-    investment.duration = req.body.duration;
+    investment.units = req.body.units;
+    investment.total_investment = req.body.total_investment;
     investment.amount_per_unit = req.body.amount_per_unit;
     investment.available_units = req.body.available_units;
     await investment.save();

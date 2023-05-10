@@ -1,22 +1,22 @@
-const UserInvestment = require("../../model/usersInvestmentModel");
+const InvestmentPackage = require("../../model/investment_packageModel");
 const pagination = require("express-paginate");
 
 // Get all user investments
-exports.getUserInvestments = async (req, res) => {
+exports.getInvestmentPackage = async (req, res) => {
   try {
     const [results, itemCount] = await Promise.all([
-      UserInvestment.find({})
-        .populate("user investment")
+      InvestmentPackage.find({})
+        .populate("investment package")
         .limit(req.query.limit)
         .skip(req.skip)
         .sort({ createdAt: -1 })
         .exec(),
-      UserInvestment.countDocuments({}),
+      InvestmentPackage.countDocuments({}),
     ]);
     const pageCount = Math.ceil(itemCount / req.query.limit);
 
     res.status(200).json({
-      userInvestments: results,
+      investmentPackage: results,
       pageCount,
       itemCount,
       pages: pagination.getArrayPages(req)(3, pageCount, req.query.page),
@@ -28,13 +28,13 @@ exports.getUserInvestments = async (req, res) => {
 };
 
 // Get a single user investment
-exports.getUserInvestment = async (req, res) => {
+exports.getInvestmentPackageById = async (req, res) => {
   try {
-    const userInvestment = await UserInvestment.findById(req.params.id);
-    if (!userInvestment) {
+    const investmentPackage = await InvestmentPackage.findById(req.params.id);
+    if (!investmentPackage) {
       return res.status(404).json({ message: "User investment not found" });
     }
-    res.status(200).json(userInvestment);
+    res.status(200).json(InvestmentPackage);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -42,11 +42,11 @@ exports.getUserInvestment = async (req, res) => {
 };
 
 // Create a new user investment
-exports.createUserInvestment = async (req, res) => {
+exports.createInvestmentPackage = async (req, res) => {
   try {
-    const userInvestment = new UserInvestment(req.body);
-    await userInvestment.save();
-    res.status(201).json(userInvestment);
+    const investmentPackage = new InvestmentPackage(req.body);
+    await investmentPackage.save();
+    res.status(201).json(investmentPackage);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -54,17 +54,17 @@ exports.createUserInvestment = async (req, res) => {
 };
 
 // Update a user investment
-exports.updateUserInvestment = async (req, res) => {
+exports.updateInvestmentPackage = async (req, res) => {
   try {
-    const userInvestment = await UserInvestment.findByIdAndUpdate(
+    const investmentPackage = await InvestmentPackage.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true }
     );
-    if (!userInvestment) {
-      return res.status(404).json({ message: "User investment not found" });
+    if (!investmentPackage) {
+      return res.status(404).json({ message: " Investment package not found" });
     }
-    res.status(200).json(userInvestment);
+    res.status(200).json(investmentPackage);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -72,15 +72,15 @@ exports.updateUserInvestment = async (req, res) => {
 };
 
 // Delete a user investment
-exports.deleteUserInvestment = async (req, res) => {
+exports.deleteInvestmentPackage = async (req, res) => {
   try {
-    const userInvestment = await UserInvestment.findByIdAndDelete(
+    const investmentPackage = await InvestmentPackage.findByIdAndDelete(
       req.params.id
     );
-    if (!userInvestment) {
-      return res.status(404).json({ message: "User investment not found" });
+    if (!investmentPackage) {
+      return res.status(404).json({ message: "Investment package not found" });
     }
-    res.status(200).json({ message: "User investment deleted" });
+    res.status(200).json({ message: "Investment package deleted" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

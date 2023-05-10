@@ -9,7 +9,7 @@ const {
   createprofile,
   sendVerificationMail,
   verifyEmail,
-  resetPassword,
+  changePassword,
   forgotPassword,
 } = require("./AuthController");
 const GoogleOauthController = require("./Oauth");
@@ -36,9 +36,9 @@ router.get("/user/send-verification-email", Protect, sendVerificationMail);
 
 router.get("/user/forgot-password", forgotPassword);
 
-router.post("/user/reset-password", resetPassword);
+router.post("/user/reset-password", changePassword);
 
-// router.get("/user/verifyemail", Protect, verifyEmail);
+router.get("/user/verifyemail", Protect, verifyEmail);
 
 router.get("/google", GoogleOauthController.googleSignIn);
 

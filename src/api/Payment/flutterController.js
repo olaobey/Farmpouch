@@ -1,8 +1,9 @@
-const flutterwave = require("flutterwave-node")({
+const flutterwave = require("flutterwave-node-v3");
+const flw = new flutterwave({
   publicKey: process.env.FLUTTERWAVE_PUBLIC_KEY,
-  secretKey: process.evn.FLUTTERWAVE_SECRET_KEY,
+  secretKey: process.env.FLUTTERWAVE_SECRET_KEY,
   encryptionKey: process.env.FLUTTERWAVE_ENCRYPTION_KEY,
-  isProduction: false,
+  isProduction: process.env.FLUTTERWAVE_IS_PRODUCTION,
 });
 const investment = require("../../model/investmentModel");
 const {
@@ -42,7 +43,7 @@ exports.handlePayment = async (req, res) => {
       },
     };
 
-    const payment = await flutterwave.Payment.initialize(paymentData);
+    const payment = await flw.Payment.initialize(paymentData);
 
     //  Redirect user to Flutterwave payment page
     res.redirect(payment.data.data.link);

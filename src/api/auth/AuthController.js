@@ -153,7 +153,7 @@ exports.getProfile = async (res, req) => {
     const profile = await User.findByPk(req.params.id);
     if (!profile) {
       return res.status(404).json({
-        message: "Profile not found",
+        message: "Unauthenticated pls login",
       });
     }
     res.status(200).json({
@@ -169,7 +169,7 @@ exports.getProfile = async (res, req) => {
 exports.sendVerificationMail = async (req, res) => {
   try {
     if (req.user.isVerified || req.user.provider == "google") {
-      res.status(500).json({ message: "You have already been verified." });
+      res.status(200).json({ message: "You have already been verified." });
     } else {
       // generate a token
       const token = crypto.randomBytes(32).toString("hex");
@@ -180,7 +180,7 @@ exports.sendVerificationMail = async (req, res) => {
       res.status(200).send({
         message: "Verification mail has been sent successfully",
         username: req.user.username,
-        verified: req.user.isVerified,
+        // verified: req.user.isVerified,
         emailSent: true,
       });
     }
@@ -188,37 +188,33 @@ exports.sendVerificationMail = async (req, res) => {
     throw new Error(error);
   }
 };
-// exports.verifyMail = async (req, res) => {
-//   try {
-//     // grab the token
-//     const token = req.query.token;
-//     // check if token exists
-//     // or just send an error
-//     if (token) {
-//       var check = await resetToken.findOne({ token: token });
-//       if (check) {
-//         // token verified
-//         // set the property of verified to true for the user
-//         var userData = await User.findOne({ email: check.email });
-//         userData.isVerified = true;
-//         await userData.save();
-//         // delete the token now itself
-//         await resetToken.findOneAndDelete({ token: token });
-//         res
-//           .status(204)
-//           .send({ message: "Token has been deleted successfully." });
-//       } else {
-//         res.status(401).send({
-//           username: req.user.username,
-//           verified: req.user.isVerified,
-//           err: "Invalid token or Token has expired, Try again.",
-//         });
-//       }
-//     }
-//   } catch (error) {
-//     throw new Error(error);
-//   }
-// };
+exports.verifyMail = async (req, res) => {
+  try {
+    // grab the token
+    const { token, userId } = req.body;
+    // check if token exists
+    // or just send an error
+    if (token && userId) {
+      var check = await resetToken.findOne({ token: token });
+      if (check.userId === userId) {
+        // token verified
+        // set the property of verified to true for the user
+        var userData = await User.findOne({ email: check.email });
+        userData.isVerified = true;
+        await userData.save();
+        // delete the token now itself
+        await resetToken.findOneAndDelete({ token: token });
+        res.status(204).send({ message: "Account verify successfully." });
+      } else {
+        res.status(400).send({
+          message: "Invalid token or Token has expired, Try again.",
+        });
+      }
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 
 exports.forgotPassword = async (req, res) => {
   try {
@@ -228,39 +224,37 @@ exports.forgotPassword = async (req, res) => {
     if (userData) {
       if (userData.provider == "google") {
         res.status(500).send({
-          message:
-            "User exists with Google account. Try resetting your google account password or logging using it.",
+          message: "User exists with Google account.",
           type: "danger",
         });
       }
-    } else {
-      // user exists and is not with google
-      // generate token
-      const token = crypto.randomBytes(32).toString("hex");
-      // add that to database
-      await resetToken({ token: token, email: email }).save();
-      // send an email for verification
-      mailer.sendResetEmail(email, token);
-      res.status(200).send({
-        message: "Reset email sent. Check your email for more info.",
-        type: "success",
-      });
     }
+    // user exists and is not with google
+    // generate token
+    const token = crypto.randomBytes(32).toString("hex");
+    // add that to database
+    await resetToken({ token: token, email: email }).save();
+    // send an email for verification
+    mailer.sendResetEmail(email, token);
+    res.status(200).send({
+      message: "Reset email sent. Check your email for more info.",
+      type: "success",
+    });
   } catch (error) {
     res
-      .status(403)
+      .status(500)
       .send({ message: "No user Exists with this email.", type: "danger" });
     throw new Error(error);
   }
 };
 
-exports.resetPassword = async (req, res) => {
+exports.changePassword = async (req, res) => {
   try {
     // get passwords
     const { password, password2, email } = req.body;
     console.log(password);
     console.log(password2);
-    if (!password || !password2 || password2 != password) {
+    if (!password || !password2 || password2 !== password) {
       res
         .status(403)
         .send({ message: "Passwords Don't Match !", email: email });

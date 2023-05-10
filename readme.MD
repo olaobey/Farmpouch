@@ -151,13 +151,13 @@ To use the application, follow these steps:
 *`POST /api/v1/investment_payment:` Create a new payment
 *`GET /api/v1/payment/callback` verify the payment
 
-**##User_investment**
+**##investment_package**
 
-*`POST /api/v1/user_investment:` Create a new user investment
-*`GET /api/v1/user_investment/getAllInvestment` Get all investments
-*`GET /api/v1/user_investment/:id/ ` get a particular investment
-*`PUT /api/v1/user_investment/:id` Update a specific Investment
-*`DELETE /api/v1/user_investment/:id:` Delete a an existing investment
+*`POST /api/v1/investment_package:` Create a new user investment
+*`GET /api/v1/investment_package/getAllInvestment` Get all investments
+*`GET /api/v1/investment_package/:id/ ` get a particular investment
+*`PUT /api/v1/investment_package/:id` Update a specific Investment
+*`DELETE /api/v1/investment_package/:id:` Delete a an existing investment
 
 **###Built With**
 

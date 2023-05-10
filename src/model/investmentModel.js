@@ -2,28 +2,26 @@ const mysql = require("mysql");
 const db = require("../config/db");
 
 class Investment {
-  constructor(name, location, duration, amountPerUnit, isAvailable) {
-    this.name = name;
-    this.location = location;
-    this.duration = duration;
+  constructor(units, total_investment, amountPerUnit, isAvailable) {
+    this.units = units;
+    this.total_investment = total_investment;
     this.amountPerUnit = amountPerUnit;
     this.isAvailable = isAvailable;
   }
 
   async createInvestment(investmentData) {
-    this.name = investmentData.name || this.name;
-    this.location = investmentData.location || this.location;
-    this.duration = investmentData.duration || this.duration;
+    this.units = investmentData.units || this.units;
+    this.total_investment =
+      investmentData.total_investment || this.total_investment;
     this.amountPerUnit = investmentData.amountPerUnit || this.amountPerUnit;
     this.available = investmentData.isAvailable || this.isAvailable;
     try {
       const connection = mysql.createConnection(db);
       const query =
-        "INSERT INTO investments (name, location, duration, amountPerUnit, isAvailable) VALUES (?, ?, ?, ?, ?)";
+        "INSERT INTO investments (units, total_investment, amountPerUnit, isAvailable) VALUES (?, ?, ?, ?)";
       const values = [
-        this.name,
-        this.location,
-        this.duration,
+        this.units,
+        this.total_investment,
         this.amountPerUnit,
         this.isAvailable,
       ];
@@ -41,19 +39,18 @@ class Investment {
   }
 
   async updateInvestment(investmentData) {
-    this.name = investmentData.name || this.name;
-    this.location = investmentData.location || this.location;
-    this.duration = investmentData.duration || this.duration;
+    this.units = investmentData.units || this.units;
+    this.total_investment =
+      investmentData.total_investment || this.total_investment;
     this.amountPerUnit = investmentData.amountPerUnit || this.amountPerUnit;
     this.available = investmentData.isAvailable || this.isAvailable;
     try {
       const connection = mysql.createConnection(db);
       const query =
-        "UPDATE investments SET name = ?, location = ?, duration = ?, amountPerUnit = ?, isAvailable = ? WHERE id = ?";
+        "UPDATE investments SET units = ?, total_investment = ?, amountPerUnit = ?, isAvailable = ? WHERE id = ?";
       const values = [
-        this.name,
-        this.location,
-        this.duration,
+        this.units,
+        this.total_investment,
         this.amountPerUnit,
         this.isAvailable,
         this.id,

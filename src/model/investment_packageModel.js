@@ -1,14 +1,14 @@
 const mysql = require("mysql");
 const db = require("../config/db");
 
-class UsersInvestmentsModel {
+class investment_packageModel {
   // CREATE
-  static async create(usersInvestmentData) {
+  static async create(investment_packageData) {
     try {
       const connection = mysql.createConnection(db);
-      const query = `INSERT INTO users_investments SET ?`;
+      const query = `INSERT INTO investment_package SET ?`;
       const result = await new Promise((resolve, reject) => {
-        connection.query(query, usersInvestmentData, (error, results) => {
+        connection.query(query, investment_packageData, (error, results) => {
           if (error) {
             reject(error);
           } else {
@@ -19,18 +19,18 @@ class UsersInvestmentsModel {
       connection.end();
       return result.insertId;
     } catch (error) {
-      console.error(`Error creating user's investment: ${error}`);
+      console.error(`Error occurred in creating investment package: ${error}`);
       throw error;
     }
   }
 
   // READ
-  static async getById(usersInvestmentId) {
+  static async getById(investment_packageId) {
     try {
       const connection = mysql.createConnection(db);
-      const query = `SELECT * FROM users_investments WHERE id = ?`;
+      const query = `SELECT * FROM investment_package WHERE id = ?`;
       const result = await new Promise((resolve, reject) => {
-        connection.query(query, [usersInvestmentId], (error, results) => {
+        connection.query(query, [investment_packageId], (error, results) => {
           if (error) {
             reject(error);
           } else if (results.length === 0) {
@@ -43,25 +43,27 @@ class UsersInvestmentsModel {
       connection.end();
       return result;
     } catch (error) {
-      console.error(`Error getting user's investment by ID: ${error}`);
+      console.error(
+        `Error occurred in getting investment package by ID: ${error}`
+      );
       throw error;
     }
   }
 
   // UPDATE
-  static async update(usersInvestmentId, updatedUsersInvestmentData) {
+  static async update(investment_packageId, updateInvestment_packageData) {
     try {
       const connection = mysql.createConnection(db);
-      const query = `UPDATE users_investments SET ? WHERE id = ?`;
+      const query = `UPDATE investment_package SET ? WHERE id = ?`;
       const result = await new Promise((resolve, reject) => {
         connection.query(
           query,
-          [updatedUsersInvestmentData, usersInvestmentId],
+          [updateInvestment_packageData, investment_packageId],
           (error, results) => {
             if (error) {
               reject(error);
             } else if (results.affectedRows === 0) {
-              reject("User's investment not found.");
+              reject("investment package not found.");
             } else {
               resolve(true);
             }
@@ -71,22 +73,22 @@ class UsersInvestmentsModel {
       connection.end();
       return result;
     } catch (error) {
-      console.error(`Error updating user's investment: ${error}`);
+      console.error(`Error occurred in updating investment package: ${error}`);
       throw error;
     }
   }
 
   // DELETE
-  static async delete(usersInvestmentId) {
+  static async delete(investment_packageId) {
     try {
       const connection = mysql.createConnection(db);
-      const query = `DELETE FROM users_investments WHERE id = ?`;
+      const query = `DELETE FROM investment_package WHERE id = ?`;
       const result = await new Promise((resolve, reject) => {
-        connection.query(query, [usersInvestmentId], (error, results) => {
+        connection.query(query, [investment_packageId], (error, results) => {
           if (error) {
             reject(error);
           } else if (results.affectedRows === 0) {
-            reject("User's investment not found.");
+            reject("investment package not found.");
           } else {
             resolve(true);
           }
@@ -95,10 +97,10 @@ class UsersInvestmentsModel {
       connection.end();
       return result;
     } catch (error) {
-      console.error(`Error deleting user's investment: ${error}`);
+      console.error(`Error occurred in deleting investment package: ${error}`);
       throw error;
     }
   }
 }
 
-module.exports = UsersInvestmentsModel;
+module.exports = investment_packageModel;

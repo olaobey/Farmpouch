@@ -50,7 +50,7 @@ router.post(
 
 router.post("/farm-investment", protect, createInvestment);
 
-router.get("/farm-investment", protect, getUserInvestments);
+router.get("/farm-investments", protect, getUserInvestments);
 
 router.get("/farm-investment/:id", protect, getInvestmentId);
 

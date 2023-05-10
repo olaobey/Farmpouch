@@ -25,7 +25,7 @@
     "express-paginate": "^1.0.2",
     "express-session": "^1.17.3",
     "express-validator": "^7.0.1",
-    "flutterwave-node": "^1.2.2",
+    "flutterwave-node-v3": "^1.1.5",
     "googleapis": "^118.0.0",
     "jsonwebtoken": "^9.0.0",
     "jwks-rsa": "^3.0.1",
