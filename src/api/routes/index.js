@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.use("/", authRoutes);
 
-// router.use("/", adminRoutes);
+router.use("/", adminRoutes);
 
 router.use("/", investmentRoutes);
 

@@ -15,8 +15,6 @@ const customLogger = (message) => (req, res, next) => {
 // Middleware Configuration for parse request body and cookies
 app.use(express.json());
 
-app.use(morgan("dev"));
-
 app.use(pagination.middleware(process.env.LIMIT, process.env.MAX_LIMIT)); // default limit: 10, max limit: 50
 
 app.use(express.urlencoded({ extended: true }));
@@ -30,7 +28,6 @@ app.use(
     key: "session_cookie_name",
     secret: "session_cookie_secret",
     store: new MySQLStore({
-      host: localhost,
       port: 3306,
       database: "cookie_user",
     }),

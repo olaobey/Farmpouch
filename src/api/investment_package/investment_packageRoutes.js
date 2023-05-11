@@ -18,3 +18,5 @@ router.post("/investment_package", createInvestmentPackage);
 router.put("/investment_package/:id", updateInvestmentPackage);
 
 router.delete("/investment_package/:id", deleteInvestmentPackage);
+
+module.exports = router;

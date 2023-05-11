@@ -31,3 +31,5 @@ router.get("/admin/users/:id", adminAuth, getUsersById);
 router.put("/admin/users/:id", adminAuth, updateUsers);
 
 router.put("/admin/users/:id", adminAuth, deleteUsers);
+
+module.exports = router;
