@@ -191,11 +191,11 @@ exports.sendVerificationMail = async (req, res) => {
 exports.verifyMail = async (req, res) => {
   try {
     // grab the token
-    const { token, userId } = req.body;
+    const { access_token, userId } = req.body;
     // check if token exists
     // or just send an error
-    if (token && userId) {
-      var check = await resetToken.findOne({ token: token });
+    if (access_token && userId) {
+      const check = await resetToken.findOne({ access_token: access_token });
       if (check.userId === userId) {
         // token verified
         // set the property of verified to true for the user
@@ -203,7 +203,7 @@ exports.verifyMail = async (req, res) => {
         userData.isVerified = true;
         await userData.save();
         // delete the token now itself
-        await resetToken.findOneAndDelete({ token: token });
+        await resetToken.findOneAndDelete({ access_token: access_token });
         res.status(204).send({ message: "Account verify successfully." });
       } else {
         res.status(400).send({

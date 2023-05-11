@@ -1,10 +1,10 @@
 const flutterwave = require("flutterwave-node-v3");
-const flw = new flutterwave({
-  publicKey: process.env.FLUTTERWAVE_PUBLIC_KEY,
-  secretKey: process.env.FLUTTERWAVE_SECRET_KEY,
-  encryptionKey: process.env.FLUTTERWAVE_ENCRYPTION_KEY,
-  isProduction: process.env.FLUTTERWAVE_IS_PRODUCTION,
-});
+const flw = new flutterwave(
+  String(process.env.FLUTTERWAVE_PUBLIC_KEY),
+  String(process.env.FLUTTERWAVE_SECRET_KEY),
+  String(process.env.FLUTTERWAVE_ENCRYPTION_KEY),
+  String(process.env.FLUTTERWAVE_IS_PRODUCTION)
+);
 const investment = require("../../model/investmentModel");
 const {
   getInvestmentById,
@@ -24,7 +24,7 @@ exports.handlePayment = async (req, res) => {
       tx_ref: `investment-${investmentId}-${Date.now()}`,
       amount: amount,
       currency: "NGN",
-      redirect_url: "http://localhost:3000/success",
+      redirect_url: "http://localhost:3000/handle-flutterwave-payment",
       payment_options: "card",
       meta: {
         userId: userId,

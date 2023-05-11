@@ -33,7 +33,7 @@ exports.uploadInvestments = async (req, res) => {
 };
 
 // GET all investments
-exports.getAllInvestments = async (req, res) => {
+exports.getUserInvestments = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;

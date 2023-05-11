@@ -1,18 +1,11 @@
 const express = require("express");
-const cors = require("cors");
-const morgan = require("morgan");
-const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
 const routers = require("../src/api/routes/index");
 const flash = require("connect-flash");
-const corsOptions = { credentials: true, origin: process.env.URL || "*" };
 const pagination = require("express-paginate");
 const app = express();
-
-// Configuring dotenv
-dotenv.config();
 
 const customLogger = (message) => (req, res, next) => {
   console.log(`Hello from ${message}`);
@@ -28,11 +21,7 @@ app.use(pagination.middleware(process.env.LIMIT, process.env.MAX_LIMIT)); // def
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use(csrf());
-
 app.use(flash());
-
-app.use(cors(corsOptions));
 
 app.use(cookieParser("secret"));
 
@@ -48,7 +37,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     // setting the max age to longer duration
-    maxAge: 24 * 60 * 60 * 1000,
+    maxAge: 24 * 60 * 60 * 1000, // constant max cookie lifetime
   })
 );
 
